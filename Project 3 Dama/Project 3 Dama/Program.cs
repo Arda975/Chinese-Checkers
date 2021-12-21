@@ -24,12 +24,12 @@ namespace Project_3_Dama
 
             int TempX_2;
             int TempY_2;
-            int TempZ_2;
+            //int TempZ_2;
 
-            int satır;
-            int sütun;
+            int satir;
+            int sutun;
             int yeni_satır;
-            int yeni_sütun;
+            int yeni_sutun;
 
 
             int[,] board = new int[,]
@@ -46,7 +46,7 @@ namespace Project_3_Dama
              };
 
 
-            //burda o ları '0', . ları '1', x leri '2'  olarak aldım.
+            //burda o ları '0', .(noktaları) ları '1', x leri '2'  olarak aldım.
             for (int i = 0; i < board.GetLength(0); i++)
             {
                 Console.SetCursorPosition(x + i, y);
@@ -168,15 +168,15 @@ namespace Project_3_Dama
                                                             //ama array sınırların dışında diye hata veriyor
                                 {
                                     Random a = new Random();
-                                    satır = a.Next(0, 9);
-                                    sütun = a.Next(0, 9);
+                                    satir = a.Next(0, 8);
+                                    sutun = a.Next(0, 8);
                                     //alttaki ifte sorun veriyor ona bakıver.
-                                    if ((board[satır, sütun] == 0) && ((board[satır + 1, sütun] == 1) | (board[satır - 1, sütun] == 1) | (board[satır, sütun + 1] == 1) | (board[satır, sütun - 1] == 1)))
+                                    if ((board[satir, sutun] == 0) && ((board[satir + 1, sutun] == 1) || (board[satir - 1, sutun] == 1) || (board[satir, sutun + 1] == 1) || (board[satir, sutun - 1] == 1)))
                                     {// eğer üst tarafı düzelttiysen altta o satır ve sütunu gene z de yaptığımız gibi hafızaya alıyor (TempX_2  şeklinde flan).
-                                        TempX_2 = satır;
-                                        TempY_2 = sütun;
+                                        TempX_2 = satir;
+                                        TempY_2 = sutun;
 
-                                        TempZ_2 = board[TempX_2, TempY_2];
+                                        //TempZ_2 = board[TempX_2, TempY_2];
                                         TempZ_2bool = true;
 
                                         while (TempZ_2bool == true)
@@ -184,17 +184,24 @@ namespace Project_3_Dama
                                          // eğer noktaysa x'e bastığımızdaki kısımların aynısı gerçekleşiyor.
                                             Random b = new Random();
                                             yeni_satır = b.Next(TempX_2 - 1, TempX_2 + 2);
-                                            yeni_sütun = b.Next(TempY_2 - 1, TempY_2 + 2);
+                                            yeni_sutun = b.Next(TempY_2 - 1, TempY_2 + 2);
 
-                                            if (board[yeni_satır, yeni_sütun] == 1)
+                                            if (board[yeni_satır, yeni_sutun] == 1)
                                             {
-                                                Console.WriteLine('o');
-                                                board[yeni_satır, yeni_sütun] = 0;
-                                                board[TempX_2, TempY_2] = 1;
-                                                Console.SetCursorPosition(TempX_2, TempY_2);
-                                                Console.WriteLine(".");
-                                                TempZ_2bool = false;
-                                                break;
+                                                if (board[yeni_satır, yeni_sutun] != 0 && board[yeni_satır, yeni_sutun] != 2)
+                                                {
+                                                    if ((yeni_satır == TempX_2 + 1 && yeni_sutun == TempY_2) || (yeni_satır == TempX_2 - 1 && yeni_sutun == TempY_2) || (yeni_sutun == TempY_2 + 1 && yeni_satır == TempX_2) || (yeni_sutun == TempY_2 - 1 && yeni_satır == TempX_2))
+                                                    {
+                                                        Console.SetCursorPosition(yeni_sutun, yeni_satır);
+                                                        Console.WriteLine('o');
+                                                        board[yeni_satır, yeni_sutun] = 0;
+                                                        board[TempX_2, TempY_2] = 1;
+                                                        Console.SetCursorPosition(TempX_2, TempY_2);
+                                                        Console.WriteLine(".");
+                                                        TempZ_2bool = false;
+                                                        break;
+                                                    }
+                                                }
                                             }
                                         }
                                         break;
@@ -207,9 +214,6 @@ namespace Project_3_Dama
                     }//switch console key
                 }//console.KeyAvileable
             }//while döngüsü
-
-
-
 
 
 
